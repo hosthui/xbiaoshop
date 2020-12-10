@@ -1,0 +1,125 @@
+<div class="w3ls-header" id="navbar">
+        <div class="w3ls-header-left">
+            <p>
+                <a href="#"><img style="position: relative;left: -10px; top: -1px" src="./images/shopping.png">
+                    XB全新高端购物平台
+                </a>
+            </p>
+        </div>
+        <div class="w3ls-header-right">
+            <ul>
+                <li class="dropdown head-dpdn">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"
+                                                                                  aria-hidden="true"></i>人名<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="profile.html">个人中心</a></li>
+                        <li><a href="javascript:void(0)" @click="loginout()">注销</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown head-dpdn">
+                    <a href="car.html" class="dropdown-toggle"><i class="fa fa-gift" aria-hidden="true"></i>购物车</a>
+                </li>
+                <li class="dropdown head-dpdn">
+                    <a href="waitPay.html" class="dropdown-toggle"><i class="fa fa-credit-card-alt"
+                                                                      aria-hidden="true"></i>待支付</a>
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+</div>
+<div class="header-two" id="search">
+        <div class="container">
+            <div class="header-logo">
+                <h1><a href="home.html"><span>X</span>Biao </a></h1>
+                <h6>Your stores. Your place.</h6>
+            </div>
+            <div class="header-search">
+                <form>
+                    <input type="search" name="Search"
+                           placeholder="Search for a Product..." required=""
+                           v-model="searchmsg">
+                    <button type="button" class="btn btn-default"
+                            aria-label="Left Align" @click="findSearch()">
+                        <i class="fa fa-search" aria-hidden="true"> </i>
+                    </button>
+                </form>
+            </div>
+            <div class="header-cart">
+                <div class="my-account">
+                    <a href="javascript:;"></a>
+                </div>
+                <div class="cart">
+                    <a href="car.html">
+                        <button class="w3view-cart" type="submit" name="submit" value=""><i
+                                class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+                    </a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+<div class="header-three" id="list">
+        <div class="container">
+            <ul class="nav nav-pills nav-justified">
+                <li
+                        v-for="list in lists"><a :href="list.listUrl">
+                    {{list.listName}}</a></li>
+            </ul>
+        </div>
+    </div>
+<script>
+    let appna=new Vue({
+        el:"#navbar",
+        data:{},
+        methods:{
+            loginout:function () {
+                axios({
+                    url:"login/loginout",
+                }).then(response=>{
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    // $.removeCookie('cookieuser',{ path: '/'});
+                    layer.msg("注销成功")
+                    window.location.href="login.html"
+                })
+            }
+        },
+        created:function () {
+
+        }
+    })
+    let applist=new Vue({
+        el:"#list",
+        data:{
+            lists:{}
+        },
+        methods:{
+            findList:function () {
+                axios({
+                    url:"list/findlist",
+                }).then(response=>{
+                    this.lists=response.data.data
+                })
+            }
+        },
+        created:function () {
+            this.findList()
+        }
+    })
+    let appsearch=new Vue({
+        el:"#search",
+        data:{
+            searchmsg:""
+        },
+        methods:{
+            findSearch:function () {
+                sessionStorage.setItem("searchmsg",JSON.stringify(this.searchmsg))
+                window.location.href="searchList.html"
+            }
+        },
+        created:function () {
+            this.searchmsg=JSON.parse(sessionStorage.getItem("searchmsg"));
+        }
+    })
+</script>

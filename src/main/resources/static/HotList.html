@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/xbiaoshop/">
+    <title>productList</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css"><!-- 图标样式 -->
+    <link rel="stylesheet" type="text/css" href="./css/goodDetail.css">
+    <link href="css/owl.carousel.css" rel="stylesheet" type="text/css" media="all">
+
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/jquery-scrolltofixed-min.js" type="text/javascript"></script><!-- 导航栏 -->
+    <script type="text/javascript" src="js/move-top.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/owl.carousel.js"></script>
+    <script src="js/jquery.menu-aim.js"></script>
+    <script src="js/custom.js"></script>
+
+
+</head>
+
+<body>
+
+<div class="header" id="header">
+
+</div>
+<div id="app">
+    <!-- products -->
+    <div class="products">
+        <div class="container">
+            <div class="col-md-12 product-w3ls-right">
+                <!-- breadcrumbs -->
+                <ol class="breadcrumb breadcrumb1">
+                    <li><a href="home.html">Home</a></li>
+                    <li class="active">热度列表</li>
+                </ol>
+                <!-- //breadcrumbs -->
+                <!--//页大小16-->
+                <div class="products-row">
+
+
+                    <div class="col-md-3 product-grids" v-for="(goods,index) in hotPageInfo.list">
+                        <div class="agile-products">
+                            <div class="new-tag">
+                                <h6>TOP {{index+1}} <br> Hot</h6>
+                            </div>
+                            <a style="cursor:default;"
+                               @click="toDetail(goods)"><img
+                                    :src="goods.goodsPhotos.split(',')[0]"
+                                    class="img-responsive" alt="img"
+                                    style="height: 211px;"></a>
+                            <div class="agile-product-text">
+                                <h5><a style="cursor:default;" @click="toDetail(goods)">{{goods.title}}</a></h5>
+                                <h6>${{goods.price}}</h6>
+                                <h6>超级可爱的店铺</h6>
+                                <button type="button" @click="toDetail(goods)" class="w3ls-cart pw3ls-cart">
+                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>查看详情
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <nav class="navbar-right" aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="disabled"
+                                    v-if="hotPageInfo.hasPreviousPage">
+                                    <a style="cursor:default;"
+                                       aria-label="Previous"
+                                       @click="findHot(hotPageInfo.prePage)">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="disabled"
+                                    v-else>
+                                    <a style="cursor:default;" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li :class="hotPageInfo.pageNum==p?'active':''"
+                                    v-for="p in hotPageInfo.navigatepageNums">
+                                    <a style="cursor:default;"
+                                       @click="findHot(p)">
+                                        {{p}}
+                                    </a>
+                                </li>
+                                <li v-if="hotPageInfo.hasNextPage">
+                                    <a style="cursor:default;"
+                                       aria-label="Next" @click="findHot(hotPageInfo.nextPage)">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li v-else>
+                                    <a style="cursor:default;"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="clearfix"> </div>
+                </div>
+
+                <!-- //add-products -->
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <!--//products-->
+
+    <!--最热商品-->
+    <div class="add-products">
+        <h3 class="w3ls-title">热卖商品</h3>
+        <div class="container">
+            <div class="add-products-row">
+                <div class=" w3ls-add-grids" v-for="bnew in bargoods">
+                    <a href="javascript:void(0);"
+                       style="cursor:pointer;" @click="toDetail(bnew)">
+                        <img :src="bnew.goodsPhotos.split(',')[0]" width="250px" height="250px">
+                        <p>{{bnew.title}}<span>${{bnew.price}}}</span></p>
+                        <span>Shop now <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-right">
+        <div class="container">
+            <p>Copyright &copy; 2020.XB All rights reserved.<a target="_blank" href="#"></a></p>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="js/layer.js"></script>
+<script src="js/vue-2.6.11.js"></script>
+<script src="js/axios-0.19.2.min.js"></script>
+<script src="js/list/hot.js"></script>
+<script>
+    $(function() {
+        $("#header").load("main/header");
+    })
+</script>
+</html>

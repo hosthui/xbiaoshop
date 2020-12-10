@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/xbiaoshop/">
+    <title>profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css"><!-- 图标样式 -->
+    <link rel="stylesheet" type="text/css" href="./css/home.css">
+    <link rel="stylesheet" type="text/css" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/ionicons.min.css">
+    <link rel="stylesheet" href="css/layer.css">
+
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/jquery-scrolltofixed-min.js" type="text/javascript"></script><!-- 导航栏 -->
+    <script type="text/javascript" src="js/move-top.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jquery.menu-aim.js"></script>
+    <script src="js/main.js"></script><!-- 导航栏 -->
+    <script src="js/custom.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=6PVV6WP9bLyvP8Gs23ZW2kQ0Blw2Fwvt"></script>
+    <script type="text/javascript" src="js/map.jquery.js"></script>
+
+</head>
+<body>
+    <div class="header" id="header">
+
+    </div>
+
+    <!-- 个人中心 -->
+    <div class="profile" id="app">
+        <div class="container">
+            <ol class="breadcrumb breadcrumb1">
+                <li><a href="home.html">Home</a></li>
+                <li class="active">个人中心</li>
+            </ol>
+            <div class="row">
+                <div class="col-lg-4">
+                    <!-- user -->
+                    <div class="user">
+                        <div class="userHead">
+                            <div class="userImg">
+                                <img :src="user.pic" alt="" id="pic">
+                            </div>
+                            <input type="file" class="hidden uploadImg" id="picFile"
+                            @change="uploadPic($event)">
+                        </div>
+                        <div class="user__title">
+                            <h2>{{user.realName}}</h2>
+                            <p>{{user.position}}</p>
+
+                            <div class="profile__actions">
+                                <div class="post__location">
+                                    <i class="icon ion-ios-navigate"></i>
+                                    <span>{{user.nativePlace}}</span>
+                                </div>
+
+                                <div class="post__actions">
+                                    <a class="post__actions-btn post__actions-btn--green" href="#">
+                                        <i class="icon ion-ios-bookmark"></i>
+                                    </a>
+                                    <a class="post__actions-btn post__actions-btn--red" href="#">
+                                        <i class="icon ion-ios-mail"></i>
+                                    </a>
+                                    <a href="#" class="post__actions-btn post__actions-btn--blue"><span>Hire</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="user__list">
+                            <li><span>姓名:</span> <span>{{user.realName}}</span></li>
+                            <li><span>年龄:</span> <span>{{user.age}}</span></li>
+                            <li><span>性别:</span>
+                                <span v-if="user.sex==1">男</span>
+                                <span v-else-if="user.sex==0">女</span>
+                            </li>
+                            <li><span>手机号:</span> <span>{{user.phone}}</span></li>
+                        </ul>
+                        <ul class="user__stats">
+                            <li>
+                                <p>订单</p>
+                                <span>{{countorder}}</span>
+                            </li>
+                            <li>
+                                <p>购物车</p>
+                                <span>{{countcar}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end user -->
+                    <!-- social -->
+                    <div class="sidebox">
+                        <div class="sidebox__share">
+                            <span>Social:</span>
+                            <ul>
+                                <li class="facebook"><a href="#"><i class="icon ion-logo-facebook"></i></a></li>
+                                <li class="instagram"><a href="#"><i class="icon ion-logo-instagram"></i></a></li>
+                                <li class="twitter"><a href="#"><i class="icon ion-logo-twitter"></i></a></li>
+                                <li class="vk"><a href="#"><i class="icon ion-logo-vk"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end social -->
+                </div>
+                <div class="col-lg-8">
+                    <ul class="nav nav-tabs main__nav" id="main__nav" role="tablist">
+                        <li role="presentation" class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-1" role="tab"
+                                aria-controls="tab-1">我的订单</a>
+                        </li>
+
+                        <li role="presentation" class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-2" role="tab"
+                                aria-controls="tab-2">我的收藏</a>
+                        </li>
+                        <li role="presentation" class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-3" role="tab"
+                                aria-controls="tab-3">个人信息</a>
+                        </li>
+                        <li role="presentation" class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#tab-4" role="tab" aria-controls="tab-4">待评价</a>
+                        </li>
+                        <li role="presentation" class="nav-item active">
+                            <a class="nav-link" data-toggle="tab" href="#tab-5" role="tab"
+                                aria-controls="tab-5">收货地址</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="tab-1" role="tabpanel">
+                            <!-- post -->
+
+
+
+                            <div class="post" v-for="payorder in payorders">
+                                <div class="goods-item">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="col-md-3 col-sm-2 col-xs-2  car-goods-info goods-image-column">
+                                                <a style="cursor:default;" @click="toDetail(payorder)">
+                                                    <img class="goods-image" :src="payorder.goodsPhotos.split(',')[0]" />
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3 col-sm-2 col-xs-2 car-goods-info goods-params">
+                                                <p class="goods-info">
+                                                    {{payorder.title}}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-1 col-sm-2 col-xs-2 car-goods-info goods-price">
+                                                <span
+                                                        class="goods-price single-price">￥{{payorder.price}}</span></div>
+                                            <div class="col-md-2 col-sm-2 col-xs-2 car-goods-info goods-counts">
+                                                <div class="input-group">
+                                                    <input type="text" disabled class="btn num form-control goods-count"
+                                                        :value="payorder.gNum">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 col-sm-2 col-xs-2 car-goods-info goods-money-count">
+                                                <span
+                                                        class="goods-totalMoney single-total">￥{{payorder.price*payorder.gNum}}</span></div>
+                                            <div class="col-md-2 col-sm-2 col-xs-2 car-goods-info goods-operate">
+                                                <a href="javascript:void(0)"
+                                                   type="button"
+                                                   class="btn btn-primary item-sure" @click="confirm(payorder.orderId)">确认收货</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+
+                        <div class="tab-pane fade" id="tab-2" role="tabpanel">
+                            <div class="post">
+
+                                <div class="col-md-3 product-grids"
+                                     v-for="(goods,index) in collectPageInfo.list">
+                                    <div class="agile-products">
+                                        <div class="new-tag">
+                                            <h6>TOP {{index+1}} <br> Hot</h6>
+                                        </div>
+                                        <a style="cursor:default;" @click="toDetail(goods)"><img
+                                                :src="goods.goodsPhotos.split(',')[0]"  style="height: 113px;"
+                                                  class="img-responsive"
+                                                alt="img"></a>
+                                        <div class="agile-product-text">
+                                            <h5><a style="cursor:default;" @click="toDetail(goods)">
+                                                {{goods.title}}</a></h5>
+                                            <h6>${{goods.price}}</h6>
+                                            <h6>超级可爱的店铺</h6>
+                                            <button type="button" @click="toDetail(goods)"
+                                                    class="w3ls-cart pw3ls-cart">
+                                                <i class="fa fa-cart-plus" aria-hidden="true"></i>查看详情
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <nav class="navbar-right" aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <li class="disabled"
+                                                v-if="collectPageInfo.hasPreviousPage">
+                                                <a style="cursor:default;"
+                                                   aria-label="Previous"
+                                                   @click="findCollect(collectPageInfo.prePage)">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li class="disabled"
+                                                v-else>
+                                                <a style="cursor:default;" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                            <li :class="collectPageInfo.pageNum==p?'active':''"
+                                                    v-for="p in collectPageInfo.navigatepageNums">
+                                                <a style="cursor:default;"
+                                                   @click="findCollect(p)">
+                                                    {{p}}
+                                                </a>
+                                            </li>
+                                            <li v-if="collectPageInfo.hasNextPage">
+                                                <a style="cursor:default;"
+                                                   aria-label="Next" @click="findCollect(collectPageInfo.nextPage)">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                            <li v-else>
+                                                <a style="cursor:default;"
+                                                   aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="clearfix"> </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab-3" role="tabpanel" >
+                            <!-- form -->
+                            <form action="#" class="form">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h2 class="form__title">个人信息</h2>
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form__group">
+                                            <label for="loginName" class="form__label">用户名:</label>
+                                            <input name="loginName"
+                                                   id="loginName" type="text"
+                                                   class="form__input"
+                                                   v-model="upuser.userName">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form__group">
+                                            <label for="email" class="form__label">Email:</label>
+                                            <input name="email" id="email"
+                                                   type="text"
+                                                   class="form__input"
+                                                   v-model="upuser.email">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form__group">
+                                            <label for="phone" class="form__label">手机号:</label>
+                                            <input name="firstname"
+                                                   id="phone" type="text"
+                                                   class="form__input"
+                                                   v-model="upuser.phone">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form__group">
+                                            <label for="address" class="form__label">收货地址:</label>
+                                            <template
+                                                    v-for="addresse in addresses">
+                                            <input name="address" disabled
+                                                   type="text"
+                                                   class="form__input"
+                                                   v-if="upuser.defaultAddressId==addresse.addressId"
+                                                   :value="addresse.address">
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-lg-12">
+                                        <div class="form__group">
+                                            <label class="form__label">
+                                                <span>性别：</span>
+                                                <input class="form-inline"
+                                                       name="sex"
+                                                       type="radio"
+                                                       :checked="upuser.sex==0?'checked':''" v-model="upuser.sex" value="1"> 男
+                                                <input class="form-inline"
+                                                       type="radio"
+                                                       name="sex"
+                                                       :checked="upuser.sex==0?'checked':''" v-model="upuser.sex" value="0"> 女
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="form__btn"
+                                                type="button"
+                                                @click="doUpdate()"><span>保存
+                                        </span></button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- end form -->
+
+                            <!-- form -->
+                            <form  class="form">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h2 class="form__title">修改密码</h2>
+                                    </div>
+
+                                    <div class="col-12 col-lg-12">
+                                        <div class="form__group">
+                                            <label for="oldpass" class="form__label">旧密码:</label>
+                                            <input name="oldpass"
+                                                   id="oldpass"
+                                                   type="password"
+                                                   class="form__input"
+                                                   v-model="uppassword.password">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-lg-12">
+                                        <div class="form__group">
+                                            <label for="newpass" class="form__label">新密码:</label>
+                                            <input name="newpass"
+                                                   id="newpass"
+                                                   type="password"
+                                                   class="form__input"
+                                                   v-model="uppassword.newpassword" @blur="checkPassword()">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-lg-12">
+                                        <div class="form__group">
+                                            <label for="confirmpass" class="form__label">确认密码:</label>
+                                            <input name="confirmpass" id="confirmpass" type="password"
+                                                class="form__input"
+                                                   v-model="uppassword.repassword" @blur="checkPassword()">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button class="form__btn"
+                                                type="button"
+                                                @click="doUpPassword()"><span>重置密码
+                                        </span></button>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- end form -->
+                        </div>
+
+                        <div class="tab-pane fade" id="tab-4" role="tabpanel">
+
+
+                            <div class="post" v-for="putorder in putorders">
+                                <div class="goods-item">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="col-md-3 col-sm-2 col-xs-2 car-goods-info goods-image-column">
+                                                <a style="cursor:default;" @click="toDetail(putorder)">
+                                                    <img class="goods-image" :src="putorder.goodsPhotos.split(',')[0]" />
+                                                </a>
+                                            </div>
+                                            <div class="col-md-3 col-sm-2 col-xs-2 car-goods-info goods-params">
+                                                <p class="goods-info">
+                                                    {{putorder.title}}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-1 col-sm-2 col-xs-2 car-goods-info goods-price">
+                                                <span
+                                                        class="goods-price single-price">￥{{putorder.price}}</span></div>
+                                            <div class="col-md-2 col-sm-2 col-xs-2 car-goods-info goods-counts">
+                                                <div class="input-group">
+                                                    <input type="text" disabled class="btn num form-control goods-count"
+                                                        :value="putorder.gNum">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1 col-sm-2 col-xs-2 car-goods-info goods-money-count">
+                                                <span class="goods-totalMoney single-total">￥{{putorder.price*putorder.gNum}}</span></div>
+                                            <div class="col-md-2 col-sm-2 col-xs-2 car-goods-info goods-operate">
+                                                <a href="javascript:void(0)" type="button" class="btn btn-warning item-sure">评价</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="tab-pane fade in active" id="tab-5" role="tabpanel">
+                            <div class="post">
+                                <table class="table table-responsive table-border table-hover table-address">
+                                    <tr>
+                                        <th>收货人</th>
+                                        <th>所在地区</th>
+                                        <th>详细地址</th>
+                                        <th>邮编</th>
+                                        <th>电话/手机</th>
+                                        <th>操作</th>
+                                        <th>设置默认</th>
+                                    </tr>
+                                    <tr v-for="address in addresses">
+                                        <td>{{address.consignee}}</td>
+                                        <td>{{address.address}}</td>
+                                        <td>{{address.detAddress}}</td>
+                                        <td>{{address.postcode}}</td>
+                                        <td>{{address.phone}}</td>
+                                        <td style="width: 80px">
+                                            <!--<a href="javascript:;">修改</a>-->
+                                            <a class="del-address"
+                                               data-toggle="modal"
+                                               data-target=".bs-example-modal-sm"  href="javascript:;" @click="delAddress(address.addressId)">删除</a>
+                                        </td>
+                                        <!--class="btn btn-danger"-->
+                                        <td>
+                                            <button class="btn btn-danger"
+                                                    v-if="address.addressId==user.defaultAddressId">
+                                                默认地址</button>
+                                            <button v-else @click="setDef(address.addressId)">设为默认</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="post">
+                                <!-- form -->
+                                <form action="#" class="form">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h2 class="form__title">新增地址</h2>
+                                        </div>
+
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form__group">
+                                                <label for="uName" class="form__label">收货人:</label>
+                                                <input name="uName"
+                                                       type="text"
+                                                       class="form__input"
+                                                       v-model="addressmsg.consignee">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form__group">
+                                                <label for="phone" class="form__label">电话:</label>
+                                                <input name="phone"
+                                                       type="text"
+                                                       class="form__input"
+                                                       v-model="addressmsg.phone">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form__group">
+                                                <label class="form__label">所在地区:</label>
+                                                <div class="bMap" id='case3'></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form__group">
+                                                <label for="address" class="form__label">详细地址:</label>
+                                                <input name="address" placeholder="如道路、门牌号、小区等" id="address" type="text"
+                                                    class="form__input"
+                                                       v-model="addressmsg.detAddress">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button class="form__btn"
+                                                    type="button"
+                                                    @click="addAddress()"><span>保存</span></button>
+
+                                            <div class="goods-checked">
+                                                <input type="checkbox"
+                                                       v-model="isdef"
+                                                       true-value="1"
+                                                       false-value="0"> 设置为默认
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- end form -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 个人中心 -->
+
+    <div class="copy-right">
+        <div class="container">
+            <p>Copyright &copy; 2020.XB All rights reserved.<a target="_blank" href="#"></a></p>
+        </div>
+    </div>
+</body>
+<script src='js/profile.js'></script>
+<script src="js/layer.js"></script>
+<script src="js/vue-2.6.11.js"></script>
+<script src="js/axios-0.19.2.min.js"></script>
+<script src="js/profile/profile.js"></script>
+<script>
+    $(function() {
+        $("#header").load("main/header");
+        $("#pic").click(function() {
+            $("#picFile").click();
+        })
+
+    })
+</script>
+</html>

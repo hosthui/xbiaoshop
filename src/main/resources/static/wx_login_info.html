@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/xbiaoshop/">
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/layer.css">
+</head>
+<body>
+
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/layer.js"></script>
+<script src="js/vue-2.6.11.js"></script>
+<script src="js/axios-0.19.2.min.js"></script>
+<script>
+    $(function () {
+        new Vue({
+            data: {},
+            methods: {
+                getWxLoginInfo() {
+                    axios.post("getWxLoginInfo").then((res) => {
+                        if (res.data.flag) {
+                            // 登录处理
+                            // $.cookie("cookieuser", res.data.data.userId, {path: "/", expires: 7})
+                            // 存储到localStorage中
+                            localStorage.setItem("loginsession", JSON.stringify(res.data.data.loginUser))
+
+                            // 跳转到首页
+                            window.location.href="main/toHome"
+                        } else {
+                            layer.msg(res.data.message)
+                        }
+                    })
+                }
+            },
+            created() {
+                this.getWxLoginInfo();
+            }
+        })
+    })
+</script>
+</body>
+</html>

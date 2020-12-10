@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/xbiaoshop/">
+    <title>waitPay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="" />
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/menu.css" rel="stylesheet" type="text/css" media="all" /> <!-- 导航栏样式 -->
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css"><!-- 图标样式 -->
+    <link rel="stylesheet" type="text/css" href="./css/home.css">
+    <link href="css/owl.carousel.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" type="text/css" href="./css/car.css">
+    <link rel="stylesheet" href="css/layer.css">
+
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/jquery-scrolltofixed-min.js" type="text/javascript"></script><!-- 导航栏 -->
+    <script src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/move-top.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script src="js/jquery.menu-aim.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="js/main.js"></script><!-- 导航栏 -->
+    <script src="js/del.js"></script>
+</head>
+<body>
+<div class="header" id="header">
+
+</div>
+
+<div id="app">
+    <!-- products -->
+    <div class="products">
+        <div class="container">
+            <div class="col-md-12 product-w3ls-right">
+                <!-- breadcrumbs -->
+                <ol class="breadcrumb breadcrumb1">
+                    <li><a href="home.html">Home</a></li>
+                    <li class="active">待支付</li>
+                </ol>
+                <div class="clearfix"> </div>
+                <!-- //breadcrumbs -->
+
+                <div class="shopping-car-container">
+                    <div class="car-headers-menu">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-2 col-xs-2 car-menu">商品信息</div>
+                            <div class="col-md-3 col-sm-2 col-xs-2 car-menu">商品类型</div>
+                            <div class="col-md-1 col-sm-2 col-xs-2 car-menu">单价</div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 car-menu">数量</div>
+                            <div class="col-md-1 col-sm-2 col-xs-2 car-menu">金额</div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 car-menu">操作</div>
+                        </div>
+                    </div>
+                    <div class="goods-content">
+
+
+                        <div class="goods-item" v-for="(orders,index) in orders">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="col-md-3 col-sm-2 col-xs-2 car-goods-info goods-image-column">
+                                        <a href="javascript:void(0);"
+                                           @click="toDetail(orders)">
+                                            <img class="goods-image" :src="orders.goodsPhotos.split(',')[0]" />
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 col-sm-2 col-xs-2 car-goods-info goods-params">
+                                        <p class="goods-info">
+                                            {{orders.title}}
+                                        </p>
+                                    </div>
+                                    <div class="col-md-1 col-sm-2 col-xs-2 car-goods-info goods-price">
+                                        <span class="goods-price single-price">￥{{orders.price}}</span></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 car-goods-info goods-counts">
+                                        <div class="input-group">
+                                            <input type="text" disabled class="btn num form-control goods-count"
+                                                value="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 col-sm-2 col-xs-2 car-goods-info goods-money-count">
+                                        <span class="goods-totalMoney single-total">￥{{orders.gNum*orders.price}}</span></div>
+                                    <div class="col-md-2 col-sm-2 col-xs-2 car-goods-info goods-operate">
+                                        <a href="javascript:void(0)"
+                                           class="btn btn-primary item-delete" @click="pay(orders.orderId)">付款</a>
+                                        <a data-toggle="modal" data-target=".bs-example-modal-sm" href="javascript:void(0)"
+                                            class="btn btn-danger item-delete" @click="delOrder(orders.orderId)" >删除订单</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="goods-btns text-right">
+                            <input disabled class="btn btn-default goodsList-totalMoney" :value="'$'+countmoney">
+                            <a class="btn btn-primary" href="javascript:void(0)"
+                               @click="payAll()">
+                                全部付款</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- //add-products -->
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <!--//products-->
+
+    <!--最热商品-->
+    <div class="add-products">
+        <h3 class="w3ls-title">热卖商品</h3>
+        <div class="container">
+            <div class="add-products-row">
+                <div class=" w3ls-add-grids" v-for="bnew in bargoods">
+                    <a href="javascript:void(0);"
+                       style="cursor:pointer;" @click="toDetail(bnew)">
+                        <img :src="bnew.goodsPhotos.split(',')[0]" width="250px" height="250px">
+                        <p>{{bnew.title}}<span>${{bnew.price}}}</span></p>
+                        <span>Shop now <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="copy-right">
+        <div class="container">
+            <p>Copyright &copy; 2020.XB All rights reserved.<a target="_blank" href="#"></a></p>
+        </div>
+    </div>
+</body>
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/layer.js"></script>
+<script src="js/vue-2.6.11.js"></script>
+<script src="js/axios-0.19.2.min.js"></script>
+<script src="js/waitpay/waitpay.js"></script>
+<script>
+    $(function() {
+        $("#header").load("main/header");
+    })
+</script>
+</html>

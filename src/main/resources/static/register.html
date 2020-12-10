@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<!-- Head -->
+<head>
+  <title>注册表单</title>
+  <!-- Meta-Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!-- //Meta-Tags -->
+  <!-- Style -->
+  <link rel="stylesheet" href="css/common.css" type="text/css" media="all">
+    <link rel="stylesheet" href="css/layer.css">
+</head>
+<body>
+  <h1>XBiaoShop</h1>
+  <div class="container w3layouts agileits pr" id="app">
+    <a href="login.html" class="back"></a>
+    <div class="register w3layouts agileits">
+      <h2>欢 迎 注 册</h2>
+      <form >
+        <input type="text" Name="Name" placeholder="用户名" required=""
+               v-model="user.userName"  @blur="checkUsername">
+        <input type="email" Name="Email" placeholder="邮箱" required=""
+               v-model="user.email" @blur="checkEmail">
+        <input type="password" Name="Password" placeholder="密码" required=""
+               v-model="user.password" @blur="checkPassword">
+        <input type="password" Name="Password" placeholder="确认密码" required=""
+               v-model="repassword" @blur="checkPassword">
+      </form>
+      <div class="send-button w3layouts agileits">
+        <input type="button" value="免费注册" @click="addUser()">
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="footer w3layouts agileits">
+    <p>Copyright &copy; 2020.XB All rights reserved.</p>
+  </div>
+</body>
+<script src="js/jquery-2.2.3.min.js"></script>
+<script src="js/layer.js"></script>
+<script src="js/vue-2.6.11.js"></script>
+<script src="js/axios-0.19.2.min.js"></script>
+<script src="js/index/register.js"></script>
+</html>

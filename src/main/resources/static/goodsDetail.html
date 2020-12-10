@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/xbiaoshop/">
+    <title>goodsDetail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/ken-burns.css" rel="stylesheet" type="text/css" media="all" /> <!-- 轮播图样式 -->
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css"><!-- 图标样式 -->
+    <link rel="stylesheet" type="text/css" href="./css/goodDetail.css">
+    <link rel="stylesheet" href="css/flexslider.css" type="text/css" media="screen" /><!-- 放大镜样式 -->
+    <link rel="stylesheet" href="css/share.min.css"><!-- 分享插件 -->
+    <link rel="stylesheet" href="css/layer.css">
+
+    <script src="js/jquery-2.2.3.min.js"></script>
+    <script src="js/jquery-scrolltofixed-min.js" type="text/javascript"></script><!-- 导航栏 -->
+    <script type="text/javascript" src="js/move-top.js"></script>
+    <script type="text/javascript" src="js/easing.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script defer src="js/jquery.flexslider.js"></script><!-- 放大镜 -->
+    <script src="js/imagezoom.js"></script><!-- 放大镜遮罩层 -->
+    <script src="js/main.js"></script>
+    <script src="js/jquery.menu-aim.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="js/goodsDetail.js"></script>
+    <script src="js/jquery.share.min.js"></script>
+    <script src="js/magnifier.js"></script>
+
+
+</head>
+
+<body>
+
+<div class="header" id="header">
+
+</div>
+<div id="app">
+    <div class="products">
+        <div class="container">
+            <ol class="breadcrumb breadcrumb1">
+                <li><a href="home.html">Home</a></li>
+                <li class="active">商品详情</li>
+            </ol>
+            <div class="single-page">
+                <div class="single-page-row" id="detail-21">
+                    <div class="col-md-6 col-sm-6 single-top-left">
+                        <div id="magnifier">
+                            <div class="small-box">
+                                <img :src="goodsimgs[0]" alt="#">
+                                <span class="hover"></span>
+                                <span class="hover"></span>
+                            </div>
+                            <div class="big-box">
+                                <img :src="goodsimgs[0]" width="800px"
+                                     height="800px"
+                                     alt="#">
+                            </div>
+                            <div class="thumbnail-box">
+                                <a href="javascript:;" class="btn btn-prev btn_prev_disabled"></a>
+                                <a href="javascript:;" class="btn btn-next"></a>
+                                <div class="list">
+                                    <ul class="wrapper">
+                                        <li class="item item-cur"
+                                            :value="imgs"
+                                            v-for="imgs in goodsimgs">
+                                            <img
+                                                :src="imgs"
+                                                 alt="#">
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 single-top-right">
+                        <h3 class="item_name">{{goods.title}}</h3>
+                        <p>{{goods.content}}</p>
+                        <div class="single-rating">
+                            <ul>
+                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                                <li class="rating">浏览量：{{goods.look}}</li>
+                            </ul>
+                        </div>
+                        <div class="single-price">
+                            <ul>
+                                <li class="goodsMoney">${{goods.price}}</li>
+                                <li>发布时间:{{goods.publicshTime}}</li>
+                                <li><i class="fa fa-gift" aria-hidden="true"></i> Coupon</li>
+                            </ul>
+                        </div>
+
+                        <div class="numActive row">
+                            <div class="col-lg-6 col-sm-6">
+                                <span>数量:</span>
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default"
+                                                type="button"
+                                                @click="chnum(-1)">-
+                                        </button>
+                                    </span>
+                                    <input type="text"
+                                           class="num form-control"
+                                           :value="num">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default"
+                                                type="button"
+                                                @click="chnum(1)">+
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <div class="input-group">
+                                    <p class="showMoney">${{countmoney}}</p>
+                                </div>
+                            </div>
+                        </div>
+                            <button class="w3ls-cart" @click="addCar()"><i
+                                    class="fa fa-cart-plus" aria-hidden="true"></i>添加到购物车</button>
+                        <button @click="Collect()"
+                                class="w3ls-cart w3ls-cart-like">
+                            <template v-if="iscoll">取消收藏</template>
+                            <template v-else><i class="fa fa-heart-o" aria-hidden="true"></i>收藏</template>
+                        </button>
+                        <div class="single-page-icons social-icons">
+                            <ul>
+                                <li>
+                                    <h4>Share on</h4>
+                                </li>
+                                <li class="social-share" data-sites="weibo"></li>
+                                <li class="social-share" data-sites="qq"></li>
+                                <li class="social-share" data-sites="wechat"></li>
+                                <li class="social-share" data-sites="qzone"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--最热商品-->
+    <div class="add-products">
+        <div class="container">
+            <h3 class="w3ls-title">热卖商品</h3>
+            <div class="add-products-row">
+                <div class=" w3ls-add-grids" v-for="bnew in bargoods">
+                    <a href="javascript:void(0);"
+                       style="cursor:pointer;" @click="toDetail(bnew)">
+                        <img :src="bnew.goodsPhotos.split(',')[0]" width="250px" height="250px">
+                        <p>{{bnew.title}}<span>${{bnew.price}}}</span></p>
+                        <span>Shop now <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="copy-right">
+        <div class="container">
+            <p>Copyright &copy; 2020.XB All rights reserved.<a target="_blank" href="#"></a></p>
+        </div>
+    </div>
+
+
+
+</body>
+<script>
+    $(function () {
+        $('#magnifier').magnifier();
+    });
+</script>
+<script src="js/layer.js"></script>
+<script src="js/vue-2.6.11.js"></script>
+<script src="js/axios-0.19.2.min.js"></script>
+<script src="js/goods/goodsDetail.js"></script>
+<script>
+    $(function() {
+        $("#header").load("main/header");
+    })
+</script>
+</html>
